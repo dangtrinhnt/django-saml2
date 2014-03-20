@@ -1,14 +1,9 @@
 django-saml2
 ============
 
-A fork of django-saml2 (https://bitbucket.org/lgs/djangosaml2/overview)
+This is a fork of django-saml2 project (https://bitbucket.org/lgs/djangosaml2/overview)
 
-
-===========
-djangosaml2
-===========
-
-djangosaml2 is a Django application that integrates the PySAML2 library
+django-saml2 is a Django application that integrates the PySAML2 library
 into your project. This mean that you can protect your Django based project
 with a service provider based on PySAML. This way it will talk SAML2 with
 your Identity Provider allowing you to use this authentication mechanism.
