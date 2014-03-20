@@ -1,7 +1,7 @@
 django-saml2
 ============
 
-This is a fork of django-saml2 project (https://bitbucket.org/lgs/djangosaml2/overview)
+This is a fork of django-saml2 project (https://bitbucket.org/lgs/django-saml2/overview)
 
 django-saml2 is a Django application that integrates the PySAML2 library
 into your project. This mean that you can protect your Django based project
@@ -21,26 +21,26 @@ you will need to set the full path to it in the configuration stage.
 
 .. _xmlsec1: http://www.aleksey.com/xmlsec/
 
-Now you can install the djangosaml2 package using easy_install or pip. This
+Now you can install the django-saml2 package using easy_install or pip. This
 will also install PySAML2 and its dependencies automatically.
 
 
 Configuration
 =============
 
-There are three things you need to setup to make djangosaml2 works in your
+There are three things you need to setup to make django-saml2 works in your
 Django project:
 
 1. **settings.py** as you may already know, it is the main Django
    configuration file.
-2. **urls.py** is the file where you will include djangosaml2 urls.
+2. **urls.py** is the file where you will include django-saml2 urls.
 3. **pysaml2** specific files such as a attribute map directory and a
    certificate.
 
 
 Changes in the settings.py file
 -------------------------------
-The first thing you need to do is add ``djangosaml2`` to the list of
+The first thing you need to do is add ``django-saml2`` to the list of
 installed apps::
 
   INSTALLED_APPS = (
@@ -50,38 +50,38 @@ installed apps::
       'django.contrib.sites',
       'django.contrib.messages',
       'django.contrib.admin',
-      'djangosaml2',  # new application
+      'django-saml2',  # new application
   )
 
-Actually this is not really required since djangosaml2 does not include
+Actually this is not really required since django-saml2 does not include
 any data model. The only reason we include it is to be able to run
-djangosaml2 test suite from our project, something you should always
+django-saml2 test suite from our project, something you should always
 do to make sure it is compatible with your Django version and environment.
 
 .. note::
 
-  When you finish the configuation you can run the djangosaml2 test suite
+  When you finish the configuation you can run the django-saml2 test suite
   as you run any other Django application test suite. Just type
-  ``python manage.py test djangosaml2``
+  ``python manage.py test django-saml2``
 
-Then you have to add the djangosaml2.backends.Saml2Backend
+Then you have to add the django-saml2.backends.Saml2Backend
 authentication backend to the list of authentications backends.
 By default only the ModelBackend included in Django is configured.
 A typical configuration would look like this::
 
   AUTHENTICATION_BACKENDS = (
       'django.contrib.auth.backends.ModelBackend',
-      'djangosaml2.backends.Saml2Backend',
+      'django-saml2.backends.Saml2Backend',
   )
 
 .. note::
 
-  Before djangosaml2 0.5.0 this authentication backend was
-  automatically added by djangosaml2. This turned out to be
+  Before django-saml2 0.5.0 this authentication backend was
+  automatically added by django-saml2. This turned out to be
   a bad idea since some applications want to use their own
   custom policies for authorization and the authentication
   backend is a good place to define that. Starting from
-  djangosaml2 0.5.0 it is now possible to define such
+  django-saml2 0.5.0 it is now possible to define such
   backends.
 
 Finally we have to tell Django what is the new login url we want to use::
@@ -109,19 +109,19 @@ view to the ``/saml2/login/`` view.
 Changes in the urls.py file
 ---------------------------
 
-The next thing you need to do is to include ``djangosaml2.urls`` module to your
+The next thing you need to do is to include ``django-saml2.urls`` module to your
 main ``urls.py`` module::
 
   urlpatterns = patterns(
       '',
       #  lots of url definitions here
 
-      (r'^saml2/', include('djangosaml2.urls')),
+      (r'^saml2/', include('django-saml2.urls')),
 
       #  more url definitions
   )
 
-As you can see we are including ``djangosaml2.urls`` under the *saml2*
+As you can see we are including ``django-saml2.urls`` under the *saml2*
 prefix. Feel free to use your own prefix but be consistent with what
 you have put in the ``settings.py`` file in the LOGIN_URL parameter.
 
@@ -133,7 +133,7 @@ start configuring PySAML. If you use just that library you have to
 put your configuration options in a file and initialize PySAML2 with
 the path to that file.
 
-In djangosaml2 you just put the same information in the Django
+In django-saml2 you just put the same information in the Django
 settings.py file under the SAML_CONFIG option.
 
 We will see a typical configuration for protecting a Django project::
@@ -267,12 +267,12 @@ and decrypt the SAML2 assertions.
 Custom and dynamic configuration loading
 ........................................
 
-By default, djangosaml2 reads the pysaml2 configuration options from the
+By default, django-saml2 reads the pysaml2 configuration options from the
 SAML_CONFIG setting but sometimes you want to read this information from
 another place, like a file or a database. Sometimes you even want this
 configuration to be different depending on the request.
 
-Starting from djangosaml2 0.5.0 you can define your own configuration
+Starting from django-saml2 0.5.0 you can define your own configuration
 loader which is a callable that accepts a request parameter and returns
 a saml2.config.SPConfig object. In order to do so you set the following
 setting::
@@ -290,7 +290,7 @@ was authenticated. It depends on the IdP configuration what exact
 attributes are sent to each SP it can talk to.
 
 When such assertion is received on the Django side it is used to find
-a Django user and create a session for it. By default djangosaml2 will
+a Django user and create a session for it. By default django-saml2 will
 do a query on the User model with the 'username' attribute but you can
 change it to any other attribute of the User model. For example,
 you can do this look up using the 'email' attribute. In order to do so
@@ -299,10 +299,10 @@ you should set the following setting::
   SAML_DJANGO_USER_MAIN_ATTRIBUTE = 'email'
 
 Please, use an unique attribute when setting this option. Otherwise
-the authentication process will fail because djangosaml2 does not know
+the authentication process will fail because django-saml2 does not know
 which Django user it should pick.
 
-You can configure djangosaml2 to create such user if it is not already in
+You can configure django-saml2 to create such user if it is not already in
 the Django database or maybe you don't want to allow users that are not
 in your database already. For this purpose there is another option you
 can set in the settings.py file::
@@ -329,7 +329,7 @@ are Django User attributes.
 
 If you are using Django user profile objects to store extra attributes
 about your user you can add those attributes to the SAML_ATTRIBUTE_MAPPING
-dictionary. For each (key, value) pair, djangosaml2 will try to store the
+dictionary. For each (key, value) pair, django-saml2 will try to store the
 attribute in the User model if there is a matching field in that model.
 Otherwise it will try to do the same with your profile custom model.
 
@@ -340,11 +340,11 @@ https://docs.djangoproject.com/en/dev/topics/auth/#storing-additional-informatio
 
 Sometimes you need to use special logic to update the user object
 depending on the SAML2 attributes and the mapping described above
-is simply not enough. For these cases djangosaml2 provides a Django
+is simply not enough. For these cases django-saml2 provides a Django
 signal that you can listen to. In order to do so you can add the
 following code to your app::
 
-  from djangosaml2.signals import pre_user_save
+  from django-saml2.signals import pre_user_save
 
   def custom_update_user(sender=user, attributes=attributes, user_modified=user_modified)
      ...
@@ -355,7 +355,7 @@ Your handler will receive the user object, the list of SAML attributes
 and a flag telling you if the user is already modified and need
 to be saved after your handler is executed. If your handler
 modifies the user object it should return True. Otherwise it should
-return False. This way djangosaml2 will know if it should save
+return False. This way django-saml2 will know if it should save
 the user object so you don't need to do it and no more calls to
 the save method are issued.
 
@@ -368,7 +368,7 @@ IdP administrators so they can add it to their list of trusted services.
 
 You can get this information starting your Django development server and
 going to the http://localhost:8000/saml2/metadata url. If you have included
-the djangosaml2 urls under a different url prefix you need to correct this
+the django-saml2 urls under a different url prefix you need to correct this
 url.
 
 SimpleSAMLphp issues
@@ -406,8 +406,8 @@ following url::
       '',
       #  lots of url definitions here
 
-      (r'^saml2/', include('djangosaml2.urls')),
-      (r'^test/', 'djangosaml2.views.echo_attributes'),
+      (r'^saml2/', include('django-saml2.urls')),
+      (r'^test/', 'django-saml2.views.echo_attributes'),
 
       #  more url definitions
   )
@@ -436,7 +436,7 @@ not given to the service provider at all. This is by design. You have to
 delegate the task of authentication to the IdP and then get an asynchronous
 response from it.
 
-Given said that, djangosaml2 does use a Django Authentication Backend to
+Given said that, django-saml2 does use a Django Authentication Backend to
 transform the SAML assertion about the user into a Django user object.
 
 **Why not put everything in a Django middleware class and make our lifes
